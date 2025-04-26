@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 2rem;
+    background: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text for contrast */
+}
+
+form, .card-container {
+    max-width: 600px;
+    margin: auto;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    background: #1e1e1e; /* Dark input background */
+    color: #ffffff; /* White text */
+    border: 1px solid #6a0dad; /* Purple border */
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    background: #6a0dad; /* Purple button */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #7b1fa2; /* Lighter purple on hover */
+}
+
+.flashcard {
+    background: #1e1e1e; /* Dark card background */
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(106, 13, 173, 0.3); /* Purple shadow */
+    border-left: 5px solid #6a0dad; /* Purple accent border */
+    color: #ffffff;
+}
+
+.flashcard h3 {
+    color: #bb86fc; /* Light purple for headings */
+    margin-top: 0;
+}
+
+/* Add some purple accents to other elements */
+h1, h2 {
+    color: #bb86fc; /* Light purple for main headings */
+    text-align: center;
+}
+
+/* Add a subtle animation for card interactions */
+.flashcard {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.flashcard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(106, 13, 173, 0.4);
+}
+
+/* Style for the card counter */
+.card-counter {
+    color: #bb86fc;
+    font-weight: bold;
+    text-align: center;
+    margin: 1rem 0;
+}
