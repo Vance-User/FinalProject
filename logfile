@@ -50,3 +50,7 @@
 2025-04-27 19:06:04.968 UTC [9562] HINT:  Is another postmaster (PID 3841) running in data directory "/var/lib/postgresql/16/main"?
 2025-04-27 20:07:06.796 UTC [3842] LOG:  checkpoint starting: time
 2025-04-27 20:07:07.105 UTC [3842] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.302 s, sync=0.003 s, total=0.309 s; sync files=4, longest=0.002 s, average=0.001 s; distance=1 kB, estimate=1 kB; lsn=0/1952F08, redo lsn=0/1952ED0
+2025-04-27 21:33:43.308 UTC [74331] FATAL:  lock file "postmaster.pid" already exists
+2025-04-27 21:33:43.308 UTC [74331] HINT:  Is another postmaster (PID 3841) running in data directory "/var/lib/postgresql/16/main"?
+2025-04-27 21:42:07.614 UTC [3842] LOG:  checkpoint starting: time
+2025-04-27 21:42:07.722 UTC [3842] LOG:  checkpoint complete: wrote 2 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.101 s, sync=0.002 s, total=0.109 s; sync files=2, longest=0.002 s, average=0.001 s; distance=1 kB, estimate=1 kB; lsn=0/1953608, redo lsn=0/19535D0
