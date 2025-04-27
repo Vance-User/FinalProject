@@ -22,3 +22,31 @@
 2025-04-26 02:32:30.739 UTC [127562] WARNING:  could not create listen socket for "localhost"
 2025-04-26 02:32:30.739 UTC [127562] FATAL:  could not create any TCP/IP sockets
 2025-04-26 02:32:30.741 UTC [127562] LOG:  database system is shut down
+2025-04-27 18:42:14.319 UTC [28939] FATAL:  lock file "postmaster.pid" already exists
+2025-04-27 18:42:14.319 UTC [28939] HINT:  Is another postmaster (PID 4882) running in data directory "/var/lib/postgresql/16/main"?
+2025-04-27 18:42:20.351 UTC [29024] FATAL:  lock file "postmaster.pid" already exists
+2025-04-27 18:42:20.351 UTC [29024] HINT:  Is another postmaster (PID 4882) running in data directory "/var/lib/postgresql/16/main"?
+2025-04-27 18:42:29.721 UTC [29208] FATAL:  lock file "postmaster.pid" already exists
+2025-04-27 18:42:29.721 UTC [29208] HINT:  Is another postmaster (PID 4882) running in data directory "/var/lib/postgresql/16/main"?
+2025-04-27 19:02:05.623 UTC [3841] LOG:  starting PostgreSQL 16.8 (Ubuntu 16.8-1.pgdg20.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, 64-bit
+2025-04-27 19:02:05.624 UTC [3841] LOG:  listening on IPv6 address "::1", port 5432
+2025-04-27 19:02:05.624 UTC [3841] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-04-27 19:02:05.626 UTC [3841] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2025-04-27 19:02:05.683 UTC [3844] LOG:  database system was interrupted; last known up at 2025-04-27 17:59:57 UTC
+2025-04-27 19:02:05.812 UTC [3844] LOG:  database system was not properly shut down; automatic recovery in progress
+2025-04-27 19:02:05.815 UTC [3844] LOG:  redo starts at 0/19528C8
+2025-04-27 19:02:05.816 UTC [3844] LOG:  invalid record length at 0/1952900: expected at least 24, got 0
+2025-04-27 19:02:05.816 UTC [3844] LOG:  redo done at 0/19528C8 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2025-04-27 19:02:05.820 UTC [3842] LOG:  checkpoint starting: end-of-recovery immediate wait
+2025-04-27 19:02:05.828 UTC [3842] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.001 s, total=0.010 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=0/1952900, redo lsn=0/1952900
+2025-04-27 19:02:05.834 UTC [3841] LOG:  database system is ready to accept connections
+2025-04-27 19:04:30.819 UTC [7454] FATAL:  lock file "postmaster.pid" already exists
+2025-04-27 19:04:30.819 UTC [7454] HINT:  Is another postmaster (PID 3841) running in data directory "/var/lib/postgresql/16/main"?
+2025-04-27 19:04:59.558 UTC [7827] FATAL:  lock file "postmaster.pid" already exists
+2025-04-27 19:04:59.558 UTC [7827] HINT:  Is another postmaster (PID 3841) running in data directory "/var/lib/postgresql/16/main"?
+2025-04-27 19:05:53.343 UTC [9378] FATAL:  lock file "postmaster.pid" already exists
+2025-04-27 19:05:53.343 UTC [9378] HINT:  Is another postmaster (PID 3841) running in data directory "/var/lib/postgresql/16/main"?
+2025-04-27 19:06:04.968 UTC [9562] FATAL:  lock file "postmaster.pid" already exists
+2025-04-27 19:06:04.968 UTC [9562] HINT:  Is another postmaster (PID 3841) running in data directory "/var/lib/postgresql/16/main"?
+2025-04-27 20:07:06.796 UTC [3842] LOG:  checkpoint starting: time
+2025-04-27 20:07:07.105 UTC [3842] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.302 s, sync=0.003 s, total=0.309 s; sync files=4, longest=0.002 s, average=0.001 s; distance=1 kB, estimate=1 kB; lsn=0/1952F08, redo lsn=0/1952ED0

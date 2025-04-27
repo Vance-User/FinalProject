@@ -1,48 +1,52 @@
-/*const form = document.getElementById('flashcard-form');
-const list = document.getElementById('flashcard-list');
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const question = document.getElementById('question').value;
-  const answer = document.getElementById('answer').value;
-
-  await fetch('/api/flashcards', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question, answer })
-  });
-
-  form.reset();
-  loadFlashcards();
-});
-
-async function loadFlashcards() {
-  const res = await fetch('/api/flashcards');
-  const cards = await res.json();
-
-  list.innerHTML = '';
-  cards.forEach(card => {
-    const div = document.createElement('div');
-    div.className = 'flashcard';
-    div.innerHTML = `
-      <h3>${card.question}</h3>
-      <p>${card.answer}</p>
-    `;
-    list.appendChild(div);
-  });
-}
-
-loadFlashcards();
-*/
 const form = document.getElementById('flashcard-form');
 const list = document.getElementById('flashcard-list');
+const viewAllCardsBtn = document.getElementById('view-all-cards');
+const studySection = document.querySelector('.study-section');
+const flashcardsSection = document.querySelector('.flashcards-section');
+const backToListBtn = document.getElementById('back-to-list');
+const studyFront = document.getElementById('study-front');
+const studyBack = document.getElementById('study-back');
+const studyPrevBtn = document.getElementById('study-prev');
+const studyNextBtn = document.getElementById('study-next');
+const studyFlipBtn = document.getElementById('study-flip');
+const studyCounter = document.querySelector('.study-counter');
+const cardCounter = document.querySelector('.card-counter');
 
-// Add debug function
+let flashcards = [];
+let currentCardIndex = 0;
+
+// Debug function
 function debug(message, data = null) {
   console.log(`[DEBUG] ${message}`, data || '');
-  // Optional: Show error to user in UI
 }
 
+// Toggle between list view and study view
+function toggleView() {
+  flashcardsSection.classList.toggle('hidden');
+  studySection.classList.toggle('hidden');
+}
+
+// Initialize study mode with a specific card
+function initStudyMode(index) {
+  currentCardIndex = index;
+  updateStudyCard();
+  toggleView();
+}
+
+// Update the study card display
+function updateStudyCard() {
+  if (flashcards.length === 0) return;
+
+  const card = flashcards[currentCardIndex];
+  studyFront.textContent = card.question;
+  studyBack.textContent = card.answer;
+  studyCounter.textContent = `${currentCardIndex + 1}/${flashcards.length}`;
+  
+  // Reset card flip state
+  document.querySelector('.study-card').classList.remove('flipped');
+}
+
+// Event listeners
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const question = document.getElementById('question').value;
@@ -61,48 +65,88 @@ form.addEventListener('submit', async (e) => {
 
     debug('Card created successfully');
     form.reset();
-    await loadFlashcards(); // Wait for reload to complete
+    await loadFlashcards();
   } catch (error) {
     debug('Error creating card:', error);
     alert('Failed to create card. Check console for details.');
   }
 });
 
+viewAllCardsBtn.addEventListener('click', () => {
+  flashcardsSection.classList.remove('hidden');
+  studySection.classList.add('hidden');
+});
+
+backToListBtn.addEventListener('click', toggleView);
+
+studyPrevBtn.addEventListener('click', () => {
+  if (currentCardIndex > 0) {
+    currentCardIndex--;
+    updateStudyCard();
+  }
+});
+
+studyNextBtn.addEventListener('click', () => {
+  if (currentCardIndex < flashcards.length - 1) {
+    currentCardIndex++;
+    updateStudyCard();
+  }
+});
+
+studyFlipBtn.addEventListener('click', () => {
+  document.querySelector('.study-card').classList.toggle('flipped');
+});
+
+document.querySelector('.study-card-container').addEventListener('click', () => {
+  document.querySelector('.study-card').classList.toggle('flipped');
+});
+
 async function loadFlashcards() {
   try {
     const res = await fetch('/api/flashcards');
-    
+
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
     }
 
-    const cards = await res.json();
-    debug('Loaded cards:', cards);
+    flashcards = await res.json();
+    debug('Loaded cards:', flashcards);
 
     list.innerHTML = '';
-    if (cards.length === 0) {
+    if (flashcards.length === 0) {
       list.innerHTML = '<p class="no-cards">No flashcards yet. Create one above!</p>';
       return;
     }
 
-    cards.forEach(card => {
+    flashcards.forEach((card, index) => {
       const div = document.createElement('div');
       div.className = 'flashcard';
       div.innerHTML = `
-        <h3>${card.question}</h3>
-        <p>${card.answer}</p>
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            <h3>${card.question}</h3>
+          </div>
+          <div class="flashcard-back">
+            <p>${card.answer}</p>
+          </div>
+        </div>
       `;
-      // Add click to flip functionality
+
       div.addEventListener('click', () => {
         div.classList.toggle('flipped');
       });
+
+      // Double click to enter study mode with this card
+      div.addEventListener('dblclick', () => {
+        initStudyMode(index);
+      });
+
       list.appendChild(div);
     });
 
     // Update counter
-    const counter = document.querySelector('.card-counter');
-    if (counter) {
-      counter.textContent = `${cards.length}/20`;
+    if (cardCounter) {
+      cardCounter.textContent = `${flashcards.length}/20`;
     }
   } catch (error) {
     debug('Error loading cards:', error);

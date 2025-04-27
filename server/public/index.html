@@ -9,7 +9,7 @@
 <body>
   <div class="app-container">
     <header>
-      <h1>Flashcard App</h1>
+      <h1 id="view-all-cards">Welcome to my Flashcard Web App</h1>
       <div class="card-counter">0/0</div>
     </header>
 
@@ -29,8 +29,31 @@
         </form>
       </section>
 
+      <section class="study-section hidden">
+        <div class="study-header">
+          <button id="back-to-list" class="back-btn">← Back to List</button>
+          <div class="study-counter">1/0</div>
+        </div>
+        
+        <div class="study-card-container">
+          <div class="study-card">
+            <div class="card-face front">
+              <div id="study-front" class="card-content">Loading cards...</div>
+            </div>
+            <div class="card-face back">
+              <div id="study-back" class="card-content">Flip to see answer</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="study-controls">
+          <button id="study-prev" class="study-control-btn">Previous</button>
+          <button id="study-flip" class="study-control-btn flip-btn">Flip Card</button>
+          <button id="study-next" class="study-control-btn">Next</button>
+        </div>
+      </section>
+
       <section class="flashcards-section">
-        <h2>Your Flashcards</h2>
         <div id="flashcard-list" class="card-container"></div>
       </section>
     </main>
