@@ -22,3 +22,54 @@
 2025-04-26 02:32:30.739 UTC [127562] WARNING:  could not create listen socket for "localhost"
 2025-04-26 02:32:30.739 UTC [127562] FATAL:  could not create any TCP/IP sockets
 2025-04-26 02:32:30.741 UTC [127562] LOG:  database system is shut down
+2025-04-26 16:00:55.174 UTC [5669] LOG:  starting PostgreSQL 16.8 (Ubuntu 16.8-1.pgdg20.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, 64-bit
+2025-04-26 16:00:55.176 UTC [5669] LOG:  listening on IPv6 address "::1", port 5432
+2025-04-26 16:00:55.176 UTC [5669] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-04-26 16:00:55.180 UTC [5669] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2025-04-26 16:00:55.230 UTC [5672] LOG:  database system was shut down at 2025-04-26 02:32:17 UTC
+2025-04-26 16:00:55.249 UTC [5669] LOG:  database system is ready to accept connections
+2025-04-26 16:03:44.954 UTC [6201] ERROR:  syntax error at or near "psql" at character 1
+2025-04-26 16:03:44.954 UTC [6201] STATEMENT:  psql -U vance -d flashcard_db
+	psql -U vance
+	psql -U vance
+	psql -U vance -d flashcard_db
+	psql -U vance
+	psql -U vance -d flashcard_db
+	psql -U vanceclear
+	SELECT * FROM flashcards;
+2025-04-26 16:05:05.478 UTC [8776] FATAL:  database "flashcard_db" does not exist
+2025-04-26 16:05:55.309 UTC [5670] LOG:  checkpoint starting: time
+2025-04-26 16:05:59.434 UTC [5670] LOG:  checkpoint complete: wrote 44 buffers (0.3%); 0 WAL file(s) added, 0 removed, 0 recycled; write=4.111 s, sync=0.009 s, total=4.126 s; sync files=11, longest=0.003 s, average=0.001 s; distance=261 kB, estimate=261 kB; lsn=0/1523420, redo lsn=0/15233E8
+2025-04-26 16:07:55.539 UTC [10727] FATAL:  role "vance" does not exist
+2025-04-26 16:08:01.499 UTC [10788] FATAL:  role "vance" does not exist
+2025-04-26 16:10:21.961 UTC [12255] ERROR:  permission denied for table flashcards
+2025-04-26 16:10:21.961 UTC [12255] STATEMENT:  SELECT * FROM flashcards ORDER BY id DESC
+2025-04-26 16:10:27.024 UTC [12318] ERROR:  permission denied for table flashcards
+2025-04-26 16:10:27.024 UTC [12318] STATEMENT:  INSERT INTO flashcards (question, answer) VALUES ($1, $2) RETURNING *
+2025-04-26 16:10:55.514 UTC [5670] LOG:  checkpoint starting: time
+2025-04-26 16:11:32.052 UTC [11433] ERROR:  relation "flashcards" does not exist
+2025-04-26 16:11:32.052 UTC [11433] STATEMENT:  GRANT ALL PRIVILEGES ON TABLE flashcards TO vance;
+2025-04-26 16:11:32.056 UTC [11433] ERROR:  relation "flashcards_id_seq" does not exist
+2025-04-26 16:11:32.056 UTC [11433] STATEMENT:  GRANT ALL PRIVILEGES ON SEQUENCE flashcards_id_seq TO vance;
+2025-04-26 16:12:29.818 UTC [5670] LOG:  checkpoint complete: wrote 942 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=94.186 s, sync=0.113 s, total=94.305 s; sync files=312, longest=0.008 s, average=0.001 s; distance=4275 kB, estimate=4275 kB; lsn=0/1950FE0, redo lsn=0/1950358
+2025-04-26 16:15:55.842 UTC [5670] LOG:  checkpoint starting: time
+2025-04-26 16:15:56.754 UTC [5670] LOG:  checkpoint complete: wrote 10 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.903 s, sync=0.005 s, total=0.913 s; sync files=9, longest=0.002 s, average=0.001 s; distance=4 kB, estimate=3848 kB; lsn=0/19513A8, redo lsn=0/1951370
+2025-04-26 16:20:55.803 UTC [5670] LOG:  checkpoint starting: time
+2025-04-26 16:20:56.111 UTC [5670] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.302 s, sync=0.003 s, total=0.309 s; sync files=4, longest=0.002 s, average=0.001 s; distance=0 kB, estimate=3463 kB; lsn=0/1951738, redo lsn=0/1951700
+2025-04-26 16:55:55.726 UTC [5670] LOG:  checkpoint starting: time
+2025-04-26 16:55:56.035 UTC [5670] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.302 s, sync=0.003 s, total=0.309 s; sync files=4, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=3117 kB; lsn=0/1951B28, redo lsn=0/1951AF0
+2025-04-26 17:00:55.135 UTC [5670] LOG:  checkpoint starting: time
+2025-04-26 17:00:55.445 UTC [5670] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.302 s, sync=0.003 s, total=0.310 s; sync files=4, longest=0.002 s, average=0.001 s; distance=1 kB, estimate=2806 kB; lsn=0/1952170, redo lsn=0/1952138
+2025-04-27 16:17:24.570 UTC [5748] LOG:  starting PostgreSQL 16.8 (Ubuntu 16.8-1.pgdg20.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, 64-bit
+2025-04-27 16:17:24.571 UTC [5748] LOG:  listening on IPv6 address "::1", port 5432
+2025-04-27 16:17:24.571 UTC [5748] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-04-27 16:17:24.573 UTC [5748] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2025-04-27 16:17:24.614 UTC [5752] LOG:  database system was interrupted; last known up at 2025-04-26 17:00:55 UTC
+2025-04-27 16:17:24.726 UTC [5752] LOG:  database system was not properly shut down; automatic recovery in progress
+2025-04-27 16:17:24.729 UTC [5752] LOG:  redo starts at 0/1952138
+2025-04-27 16:17:24.730 UTC [5752] LOG:  invalid record length at 0/1952220: expected at least 24, got 0
+2025-04-27 16:17:24.730 UTC [5752] LOG:  redo done at 0/19521E8 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2025-04-27 16:17:24.735 UTC [5750] LOG:  checkpoint starting: end-of-recovery immediate wait
+2025-04-27 16:17:24.741 UTC [5750] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.001 s, total=0.008 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=0/1952220, redo lsn=0/1952220
+2025-04-27 16:17:24.746 UTC [5748] LOG:  database system is ready to accept connections
+2025-04-27 16:18:08.024 UTC [6243] FATAL:  role "flashcards" does not exist

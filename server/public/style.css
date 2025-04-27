@@ -1,78 +1,242 @@
+/* Base Styles */
 body {
     font-family: Arial, sans-serif;
     padding: 2rem;
-    background: #121212; /* Dark background */
-    color: #e0e0e0; /* Light text for contrast */
-}
-
-form, .card-container {
+    background: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    min-height: 100vh;
+  }
+  
+  /* Form Styles */
+  form, .card-container {
     max-width: 600px;
     margin: auto;
-}
-
-input, textarea {
+  }
+  
+  input, textarea {
     width: 100%;
     padding: 0.5rem;
     margin: 0.5rem 0;
     font-size: 1rem;
-    background: #1e1e1e; /* Dark input background */
-    color: #ffffff; /* White text */
-    border: 1px solid #6a0dad; /* Purple border */
+    background: #1e1e1e;
+    color: #ffffff;
+    border: 1px solid #6a0dad;
     border-radius: 4px;
-}
-
-button {
+  }
+  
+  button {
     width: 100%;
     padding: 0.75rem;
     margin: 0.5rem 0;
     font-size: 1rem;
-    background: #6a0dad; /* Purple button */
+    background: #6a0dad;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     transition: background 0.3s;
-}
-
-button:hover {
-    background: #7b1fa2; /* Lighter purple on hover */
-}
-
-.flashcard {
-    background: #1e1e1e; /* Dark card background */
+  }
+  
+  button:hover {
+    background: #7b1fa2;
+  }
+  
+  /* Flashcard List Styles */
+  .flashcard {
+    background: #1e1e1e;
     padding: 1.5rem;
     margin: 1rem 0;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(106, 13, 173, 0.3); /* Purple shadow */
-    border-left: 5px solid #6a0dad; /* Purple accent border */
+    box-shadow: 0 4px 8px rgba(106, 13, 173, 0.3);
+    border-left: 5px solid #6a0dad;
     color: #ffffff;
-}
-
-.flashcard h3 {
-    color: #bb86fc; /* Light purple for headings */
-    margin-top: 0;
-}
-
-/* Add some purple accents to other elements */
-h1, h2 {
-    color: #bb86fc; /* Light purple for main headings */
-    text-align: center;
-}
-
-/* Add a subtle animation for card interactions */
-.flashcard {
     transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.flashcard:hover {
+  }
+  
+  .flashcard h3 {
+    color: #bb86fc;
+    margin-top: 0;
+  }
+  
+  .flashcard:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(106, 13, 173, 0.4);
-}
-
-/* Style for the card counter */
-.card-counter {
+  }
+  
+  /* Headings */
+  h1, h2 {
+    color: #bb86fc;
+    text-align: center;
+  }
+  
+  /* Card Counter */
+  .card-counter {
     color: #bb86fc;
     font-weight: bold;
     text-align: center;
     margin: 1rem 0;
-}
+  }
+  
+  /* Flashcard Viewer Styles */
+  .viewer-header {
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  .viewer-header h1 {
+    color: #bb86fc; /* Changed to match your theme */
+    margin: 0;
+  }
+  
+  .viewer-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .flashcard-container {
+    perspective: 1000px;
+    width: 100%;
+    max-width: 500px;
+    height: 300px;
+    margin-bottom: 30px;
+  }
+  
+  .flashcard-viewer .flashcard {
+    background: transparent; /* Override list view styles */
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    border-left: none;
+  }
+  
+  .flashcard-viewer .flashcard.flipped {
+    transform: rotateY(180deg);
+  }
+  
+  .flashcard-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    padding: 30px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    font-size: 22px;
+    text-align: center;
+  }
+  
+  .flashcard-front {
+    background: linear-gradient(135deg, #6a0dad 0%, #8e44ad 100%); /* Purple gradient */
+    color: white;
+  }
+  
+  .flashcard-back {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+    transform: rotateY(180deg);
+  }
+  
+  .controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .control-btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 120px;
+  }
+  
+  .prev-btn {
+    background-color: #e74c3c;
+  }
+  
+  .flip-btn {
+    background-color: #6a0dad; /* Changed to match your theme */
+  }
+  
+  .next-btn {
+    background-color: #2ecc71;
+  }
+  
+  .control-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .control-btn:active {
+    transform: translateY(0);
+  }
+  
+  .control-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .progress {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #bb86fc; /* Changed to match your theme */
+    font-weight: bold;
+  }
+  
+  /* View All Link */
+  .view-all-link {
+    display: block;
+    text-align: center;
+    margin: 20px 0;
+    padding: 12px;
+    background-color: #6a0dad;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  
+  .view-all-link:hover {
+    background-color: #7b1fa2;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    body {
+      padding: 1rem;
+    }
+    
+    .flashcard-container {
+      height: 250px;
+    }
+    
+    .flashcard-face {
+      font-size: 18px;
+      padding: 20px;
+    }
+    
+    .controls {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .control-btn {
+      width: 100%;
+      max-width: 200px;
+    }
+  }
