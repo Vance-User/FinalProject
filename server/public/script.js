@@ -1,215 +1,299 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // DOM Elements
-  const form = document.getElementById('flashcard-form');
-  const list = document.getElementById('flashcard-list');
-  const heading = document.getElementById('view-all-cards');
-  const studySection = document.querySelector('.study-section');
-  const flashcardsSection = document.querySelector('.flashcards-section');
-  const backToListBtn = document.getElementById('back-to-list');
-  const studyFront = document.getElementById('study-front');
-  const studyBack = document.getElementById('study-back');
-  const studyPrevBtn = document.getElementById('study-prev');
-  const studyNextBtn = document.getElementById('study-next');
-  const studyFlipBtn = document.getElementById('study-flip');
-  const studyCounter = document.querySelector('.study-counter');
-  const cardCounter = document.querySelector('.card-counter');
+  // Safe DOM element getter with error handling
+  function getElement(id) {
+    const el = document.getElementById(id);
+    if (!el) {
+      console.error(`Element with ID '${id}' not found`);
+      return null;
+    }
+    return el;
+  }
+
+  // Get all DOM elements safely
+  const elements = {
+    form: getElement('flashcard-form'),
+    list: getElement('flashcard-list'),
+    heading: getElement('view-all-cards'),
+    studySection: document.querySelector('.study-section'),
+    flashcardsSection: document.querySelector('.flashcards-section'),
+    backToListBtn: getElement('back-to-list'),
+    studyFront: getElement('study-front'),
+    studyBack: getElement('study-back'),
+    studyPrevBtn: getElement('study-prev'),
+    studyNextBtn: getElement('study-next'),
+    studyFlipBtn: getElement('study-flip'),
+    studyCounter: document.querySelector('.study-counter'),
+    cardCounter: document.querySelector('.card-counter'),
+    questionInput: getElement('question'),
+    answerInput: getElement('answer')
+  };
+
+  // Check for critical elements
+  if (!elements.form || !elements.list) {
+    showCriticalError();
+    return;
+  }
 
   let flashcards = [];
   let currentCardIndex = 0;
 
-  // Initialize the app
+  // Initialize the app with error handling
   function init() {
-    setupEventListeners();
-    loadFlashcards();
+    try {
+      setupEventListeners();
+      loadFlashcards();
+    } catch (error) {
+      console.error('Initialization error:', error);
+      showError('Failed to initialize application');
+    }
   }
 
-  // Set up all event listeners
+  // Display critical error (missing essential elements)
+  function showCriticalError() {
+    document.body.innerHTML = `
+      <div class="error" style="padding: 2rem; text-align: center;">
+        <h2>Application Error</h2>
+        <p>Critical components missing - please refresh the page</p>
+        <button onclick="window.location.reload()" style="padding: 0.5rem 1rem; margin-top: 1rem;">
+          Refresh Page
+        </button>
+      </div>
+    `;
+  }
+
+  // General error display function
+  function showError(message, element = elements.list) {
+    if (!element) element = document.body;
+    element.innerHTML = `
+      <div class="error">
+        <p>${message}</p>
+        <button onclick="window.location.reload()">Retry</button>
+      </div>
+    `;
+  }
+
+  // Set up event listeners with protection
   function setupEventListeners() {
-    // Header click - show all cards
-    heading.addEventListener('click', showAllCards);
-    
-    // Form submission
-    form.addEventListener('submit', handleFormSubmit);
-    
-    // Study mode controls
-    backToListBtn.addEventListener('click', showAllCards);
-    studyPrevBtn.addEventListener('click', showPreviousCard);
-    studyNextBtn.addEventListener('click', showNextCard);
-    studyFlipBtn.addEventListener('click', flipCard);
-    document.querySelector('.study-card-container').addEventListener('click', flipCard);
-    
-    // Handle delete button clicks
-    document.addEventListener('click', handleDeleteClick);
+    try {
+      // Header click
+      if (elements.heading) {
+        elements.heading.addEventListener('click', showAllCards);
+      }
+
+      // Form submission
+      elements.form.addEventListener('submit', handleFormSubmit);
+
+      // Study mode controls
+      if (elements.backToListBtn) {
+        elements.backToListBtn.addEventListener('click', showAllCards);
+      }
+      if (elements.studyPrevBtn) {
+        elements.studyPrevBtn.addEventListener('click', showPreviousCard);
+      }
+      if (elements.studyNextBtn) {
+        elements.studyNextBtn.addEventListener('click', showNextCard);
+      }
+      if (elements.studyFlipBtn) {
+        elements.studyFlipBtn.addEventListener('click', flipCard);
+      }
+
+      const studyContainer = document.querySelector('.study-card-container');
+      if (studyContainer) {
+        studyContainer.addEventListener('click', flipCard);
+      }
+
+    } catch (error) {
+      console.error('Event listener setup error:', error);
+      showError('Failed to set up event listeners');
+    }
   }
 
-  // Handle delete button clicks
-  async function handleDeleteClick(e) {
-    if (e.target.classList.contains('delete-btn')) {
-      e.stopPropagation();
-      const cardId = e.target.dataset.id;
-      if (confirm('Are you sure you want to delete this flashcard?')) {
-        try {
-          const response = await fetch(`/api/flashcards/${cardId}`, {
-            method: 'DELETE'
-          });
-          
-          if (!response.ok) throw new Error('Failed to delete card');
-          
-          await loadFlashcards();
-        } catch (error) {
-          console.error('Error deleting card:', error);
-          alert('Failed to delete card. Please try again.');
-        }
+  function renderFlashcards() {
+    try {
+      if (!elements.list) {
+        console.error("Flashcard list element not found");
+        return;
+      }
+
+      if (!flashcards || !flashcards.length) {
+        elements.list.innerHTML = '<div class="no-cards">No flashcards yet. Add one to get started!</div>';
+        return;
+      }
+
+      elements.list.innerHTML = flashcards.map((card, index) => `
+        <div class="flashcard-item" data-id="${card.id}">
+          <div class="flashcard-content">
+            <div class="flashcard-question">${escapeHtml(card.question)}</div>
+            <div class="flashcard-answer" style="display: none;">${escapeHtml(card.answer)}</div>
+          </div>
+          <div class="flashcard-actions">
+            <button class="study-btn" data-index="${index}">Study</button>
+            <button class="delete-btn" data-id="${card.id}">Delete</button>
+            <button class="toggle-answer-btn">Show Answer</button>
+          </div>
+        </div>
+      `).join('');
+
+      // Add event listeners to the new buttons
+      document.querySelectorAll('.study-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          currentCardIndex = parseInt(e.target.dataset.index);
+          showStudySection();
+        });
+      });
+
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', handleDeleteClick);
+      });
+
+      document.querySelectorAll('.toggle-answer-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const cardItem = e.target.closest('.flashcard-item');
+          const answer = cardItem.querySelector('.flashcard-answer');
+          if (answer.style.display === 'none') {
+            answer.style.display = 'block';
+            e.target.textContent = 'Hide Answer';
+          } else {
+            answer.style.display = 'none';
+            e.target.textContent = 'Show Answer';
+          }
+        });
+      });
+
+    } catch (error) {
+      console.error('Error rendering flashcards:', error);
+      showError('Failed to display flashcards');
+    }
+  }
+
+  // Helper function to prevent XSS
+  function escapeHtml(unsafe) {
+    if (!unsafe) return '';
+    return unsafe.toString()
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function updateCounters() {
+    if (elements.cardCounter) {
+      elements.cardCounter.textContent = `${flashcards.length} card${flashcards.length !== 1 ? 's' : ''}`;
+    }
+  }
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    
+    const question = elements.questionInput.value.trim();
+    const answer = elements.answerInput.value.trim();
+    
+    if (!question || !answer) {
+      showError('Please fill in both question and answer fields');
+      return;
+    }
+    
+    const newCard = {
+      id: Date.now().toString(),
+      question,
+      answer
+    };
+    
+    flashcards.push(newCard);
+    renderFlashcards();
+    updateCounters();
+    
+    elements.form.reset();
+  }
+
+  function handleDeleteClick(e) {
+    const cardId = e.target.dataset.id;
+    flashcards = flashcards.filter(card => card.id !== cardId);
+    renderFlashcards();
+    updateCounters();
+    
+    // If we're in study mode and deleted the current card
+    if (elements.studySection.style.display === 'block') {
+      if (flashcards.length === 0) {
+        showAllCards();
+      } else if (currentCardIndex >= flashcards.length) {
+        currentCardIndex = flashcards.length - 1;
+        updateStudyCard();
       }
     }
   }
 
-  // View control functions
   function showAllCards() {
-    flashcardsSection.classList.remove('hidden');
-    studySection.classList.add('hidden');
+    if (elements.studySection) elements.studySection.style.display = 'none';
+    if (elements.flashcardsSection) elements.flashcardsSection.style.display = 'block';
   }
 
-  function enterStudyMode(index) {
-    currentCardIndex = index;
+  function showStudySection() {
+    if (flashcards.length === 0) return;
+    
+    if (elements.flashcardsSection) elements.flashcardsSection.style.display = 'none';
+    if (elements.studySection) elements.studySection.style.display = 'block';
+    
     updateStudyCard();
-    flashcardsSection.classList.add('hidden');
-    studySection.classList.remove('hidden');
   }
 
-  // Study card functions
   function updateStudyCard() {
     if (!flashcards.length) return;
     
     const card = flashcards[currentCardIndex];
-    studyFront.textContent = card.question;
-    studyBack.textContent = card.answer;
-    studyCounter.textContent = `${currentCardIndex + 1}/${flashcards.length}`;
-    document.querySelector('.study-card').classList.remove('flipped');
-  }
-
-  function showPreviousCard() {
-    if (currentCardIndex > 0) {
-      currentCardIndex--;
-      updateStudyCard();
+    if (elements.studyFront) elements.studyFront.textContent = card.question;
+    if (elements.studyBack) elements.studyBack.textContent = card.answer;
+    if (elements.studyCounter) {
+      elements.studyCounter.textContent = `${currentCardIndex + 1}/${flashcards.length}`;
     }
+    
+    const studyCard = document.querySelector('.study-card');
+    if (studyCard) studyCard.classList.remove('flipped');
   }
 
   function showNextCard() {
-    if (currentCardIndex < flashcards.length - 1) {
-      currentCardIndex++;
-      updateStudyCard();
-    }
+    if (flashcards.length === 0) return;
+    
+    currentCardIndex = (currentCardIndex + 1) % flashcards.length;
+    updateStudyCard();
+  }
+
+  function showPreviousCard() {
+    if (flashcards.length === 0) return;
+    
+    currentCardIndex = (currentCardIndex - 1 + flashcards.length) % flashcards.length;
+    updateStudyCard();
   }
 
   function flipCard() {
-    document.querySelector('.study-card').classList.toggle('flipped');
+    const studyCard = document.querySelector('.study-card');
+    if (studyCard) studyCard.classList.toggle('flipped');
   }
 
-  // Form handling
-  async function handleFormSubmit(e) {
-    e.preventDefault();
-    const question = document.getElementById('question').value;
-    const answer = document.getElementById('answer').value;
-
-    try {
-      const response = await fetch('/api/flashcards', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ question, answer })
-      });
-
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-      form.reset();
-      await loadFlashcards();
-    } catch (error) {
-      console.error('Error creating card:', error);
-      alert('Failed to create card. Please try again.');
-    }
-  }
-
-  // Load flashcards from server
   async function loadFlashcards() {
     try {
-      console.log("Loading flashcards..."); // Debug log
+      console.log("Loading flashcards...");
       const res = await fetch('/api/flashcards');
       
       if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
+        throw new Error(`Server responded with status ${res.status}`);
       }
 
-      flashcards = await res.json();
-      console.log("Flashcards loaded:", flashcards); // Debug log
+      const data = await res.json();
       
-      if (!Array.isArray(flashcards)) {
-        throw new Error("Received data is not an array");
+      if (!Array.isArray(data)) {
+        throw new Error("Invalid data format received from server");
       }
+
+      flashcards = data;
+      console.log("Flashcards loaded:", flashcards);
       
       renderFlashcards();
       updateCounters();
     } catch (error) {
-      console.error('Error loading cards:', error);
-      list.innerHTML = `
-        <div class="error">
-          <p>Failed to load flashcards</p>
-          <p>${error.message}</p>
-          <button onclick="location.reload()">Retry</button>
-        </div>
-      `;
-    }
-  }
-
-  // Render flashcards to DOM
-  function renderFlashcards() {
-    list.innerHTML = '';
-    
-    if (!flashcards.length) {
-      list.innerHTML = '<p class="no-cards">No flashcards yet. Create one above!</p>';
-      return;
-    }
-
-    flashcards.forEach((card, index) => {
-      const cardElement = document.createElement('div');
-      cardElement.className = 'flashcard';
-      cardElement.innerHTML = `
-        <div class="flashcard-inner">
-          <div class="flashcard-front">
-            <h3>${card.question}</h3>
-            <button class="delete-btn" data-id="${card.id}">×</button>
-          </div>
-          <div class="flashcard-back">
-            <p>${card.answer}</p>
-            <button class="delete-btn" data-id="${card.id}">×</button>
-            <button class="study-btn" data-index="${index}">Study</button>
-          </div>
-        </div>
-      `;
-
-      cardElement.addEventListener('click', (e) => {
-        // Only flip if not clicking on buttons
-        if (!e.target.classList.contains('delete-btn') && !e.target.classList.contains('study-btn')) {
-          cardElement.classList.toggle('flipped');
-        }
-      });
-
-      // Study button handler
-      const studyBtn = cardElement.querySelector('.study-btn');
-      studyBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        enterStudyMode(index);
-      });
-
-      list.appendChild(cardElement);
-    });
-  }
-
-  // Update counters
-  function updateCounters() {
-    if (cardCounter) {
-      cardCounter.textContent = `${flashcards.length}/20`;
+      console.error('Error loading flashcards:', error);
+      showError(`Failed to load flashcards: ${error.message}`);
     }
   }
 
