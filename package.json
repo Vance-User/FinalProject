@@ -1,6 +1,7 @@
 {
   "name": "finalproject",
   "version": "1.0.0",
+  "type": "module",
   "description": "Flash Card App",
   "main": "index.js",
   "scripts": {

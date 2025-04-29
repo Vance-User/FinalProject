@@ -1,16 +1,24 @@
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const flashcardRoutes = require('./routes/flashcardRoutes');
-require('dotenv').config();
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
+import flashcardRoutes from './routes/flashcardRoutes.js';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-const app = express(); // ✅ define app first
+dotenv.config();
+
+const app = express();
+
+// Handle __dirname in ES module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the "public" folder
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes

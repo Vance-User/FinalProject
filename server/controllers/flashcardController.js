@@ -1,7 +1,7 @@
-const db = require('../db');
+import db from '../db.js';
 
 // GET all flashcards
-exports.getAllFlashcards = async (req, res) => {
+export const getAllFlashcards = async (req, res) => {
   try {
     const result = await db.query('SELECT * FROM flashcards ORDER BY id DESC');
     res.json(result.rows);
@@ -12,7 +12,7 @@ exports.getAllFlashcards = async (req, res) => {
 };
 
 // GET single flashcard
-exports.getFlashcard = async (req, res) => {
+export const getFlashcard = async (req, res) => {
   try {
     const result = await db.query('SELECT * FROM flashcards WHERE id = $1', [req.params.id]);
     if (result.rows.length === 0) {
@@ -26,9 +26,9 @@ exports.getFlashcard = async (req, res) => {
 };
 
 // POST a new flashcard
-exports.createFlashcard = async (req, res) => {
+export const createFlashcard = async (req, res) => {
   const { question, answer } = req.body;
-  
+
   if (!question || !answer) {
     return res.status(400).json({ error: 'Question and answer are required' });
   }
@@ -46,7 +46,7 @@ exports.createFlashcard = async (req, res) => {
 };
 
 // PUT/update a flashcard
-exports.updateFlashcard = async (req, res) => {
+export const updateFlashcard = async (req, res) => {
   const { id } = req.params;
   const { question, answer } = req.body;
 
@@ -59,11 +59,11 @@ exports.updateFlashcard = async (req, res) => {
       'UPDATE flashcards SET question = $1, answer = $2 WHERE id = $3 RETURNING *',
       [question, answer, id]
     );
-    
+
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Flashcard not found' });
     }
-    
+
     res.json(result.rows[0]);
   } catch (err) {
     console.error('Error updating flashcard:', err.message);
@@ -72,17 +72,17 @@ exports.updateFlashcard = async (req, res) => {
 };
 
 // DELETE a flashcard
-exports.deleteFlashcard = async (req, res) => {
+export const deleteFlashcard = async (req, res) => {
   try {
     const result = await db.query(
       'DELETE FROM flashcards WHERE id = $1 RETURNING *',
       [req.params.id]
     );
-    
+
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Flashcard not found' });
     }
-    
+
     res.json({ message: 'Flashcard deleted successfully' });
   } catch (err) {
     console.error('Error deleting flashcard:', err.message);

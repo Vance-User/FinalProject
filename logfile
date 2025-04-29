@@ -74,3 +74,29 @@
 2025-04-27 22:50:39.900 UTC [3453] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.302 s, sync=0.003 s, total=0.309 s; sync files=4, longest=0.002 s, average=0.001 s; distance=3 kB, estimate=3 kB; lsn=0/1957DF8, redo lsn=0/1957DC0
 2025-04-27 22:55:39.931 UTC [3453] LOG:  checkpoint starting: time
 2025-04-27 22:55:40.240 UTC [3453] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.302 s, sync=0.003 s, total=0.310 s; sync files=4, longest=0.002 s, average=0.001 s; distance=3 kB, estimate=3 kB; lsn=0/1958C38, redo lsn=0/1958C00
+2025-04-28 00:23:46.572 UTC [6552] LOG:  starting PostgreSQL 16.8 (Ubuntu 16.8-1.pgdg20.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, 64-bit
+2025-04-28 00:23:46.573 UTC [6552] LOG:  listening on IPv6 address "::1", port 5432
+2025-04-28 00:23:46.573 UTC [6552] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-04-28 00:23:46.576 UTC [6552] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2025-04-28 00:23:46.618 UTC [6555] LOG:  database system was interrupted; last known up at 2025-04-27 22:55:40 UTC
+2025-04-28 00:23:46.743 UTC [6555] LOG:  database system was not properly shut down; automatic recovery in progress
+2025-04-28 00:23:46.748 UTC [6555] LOG:  redo starts at 0/1958C00
+2025-04-28 00:23:46.748 UTC [6555] LOG:  invalid record length at 0/1958CE8: expected at least 24, got 0
+2025-04-28 00:23:46.748 UTC [6555] LOG:  redo done at 0/1958CB0 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2025-04-28 00:23:46.753 UTC [6553] LOG:  checkpoint starting: end-of-recovery immediate wait
+2025-04-28 00:23:46.758 UTC [6553] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.001 s, total=0.007 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=0/1958CE8, redo lsn=0/1958CE8
+2025-04-28 00:23:46.763 UTC [6552] LOG:  database system is ready to accept connections
+2025-04-28 14:58:13.214 UTC [6060] LOG:  starting PostgreSQL 16.8 (Ubuntu 16.8-1.pgdg20.04+1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, 64-bit
+2025-04-28 14:58:13.215 UTC [6060] LOG:  listening on IPv6 address "::1", port 5432
+2025-04-28 14:58:13.215 UTC [6060] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-04-28 14:58:13.218 UTC [6060] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2025-04-28 14:58:13.257 UTC [6063] LOG:  database system was interrupted; last known up at 2025-04-28 00:23:46 UTC
+2025-04-28 14:58:13.384 UTC [6063] LOG:  database system was not properly shut down; automatic recovery in progress
+2025-04-28 14:58:13.389 UTC [6063] LOG:  redo starts at 0/1958D60
+2025-04-28 14:58:13.389 UTC [6063] LOG:  invalid record length at 0/1958D98: expected at least 24, got 0
+2025-04-28 14:58:13.389 UTC [6063] LOG:  redo done at 0/1958D60 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2025-04-28 14:58:13.394 UTC [6061] LOG:  checkpoint starting: end-of-recovery immediate wait
+2025-04-28 14:58:13.400 UTC [6061] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.001 s, total=0.008 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=0/1958D98, redo lsn=0/1958D98
+2025-04-28 14:58:13.405 UTC [6060] LOG:  database system is ready to accept connections
+2025-04-28 14:58:55.386 UTC [6336] ERROR:  relation "flashcard" does not exist at character 15
+2025-04-28 14:58:55.386 UTC [6336] STATEMENT:  SELECT * FROM flashcard;

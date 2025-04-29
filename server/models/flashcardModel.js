@@ -1,4 +1,4 @@
-const db = require('../db');
+import db from '../db.js';
 
 const Flashcard = {
   async getAll() {
@@ -15,4 +15,4 @@ const Flashcard = {
   }
 };
 
-module.exports = Flashcard;
+export default Flashcard;
